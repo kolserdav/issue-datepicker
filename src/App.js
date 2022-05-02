@@ -1,23 +1,56 @@
-import logo from './logo.svg';
+import { forwardRef, useState, useRef } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import './App.css';
 
 function App() {
+
+  const inputRef = useRef(null);
+
+  const [date, setDate] = useState('');
+  const [selected, setSelected] = useState(null);
+
+  const changeDateRawHandler = (e) => {
+    setDate(e.target.value);
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 10);
+  }
+
+  const changeDateHandler = (e) => {
+    setSelected(e);
+  }
+
+  const DateInput = forwardRef(
+    ({ onClick, value }, ref) => (
+      <div>
+        <input
+          value={value}
+          ref={inputRef}
+          placeholder="dd.mm.YYYY"
+          onChange={changeDateRawHandler}
+        />
+        <button ref={ref} onClick={onClick} type="submit">
+          click
+        </button>
+      </div>
+    )
+  );
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <DatePicker
+          customInput={<DateInput />}
+          onChange={changeDateHandler}
+          selected={selected}
+          required
+          locale="ru"
+          value={date}
+          showYearDropdown
+          showMonthDropdown
+          scrollableYearDropdown
+        />
     </div>
   );
 }
