@@ -12,6 +12,7 @@ function App() {
 
   const changeDateRawHandler = (e) => {
     setDate(e.target.value);
+    // added inputRef emit focus
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
@@ -26,12 +27,14 @@ function App() {
   const DateInput = forwardRef(
     ({ onClick, value }, ref) => (
       <div>
+        {/** inputRef to input */}
         <input
           value={value}
           ref={inputRef}
           placeholder="dd.mm.YYYY"
           onChange={changeDateRawHandler}
         />
+        {/** ref to button */}
         <button ref={ref} onClick={onClick} type="submit">
           click
         </button>
